@@ -6,28 +6,43 @@ var camera, scene, renderer, camera1, camera2, camera3;
 
 var geometry, material, cubeMesh, coneMesh;
 
+var position;
+
 
 function createBottomBase(x, y, z){
     'use strict';
     var bottomBase = new THREE.Object3D();
-
+    
     geometry = new THREE.CubeGeometry(10,10,10);
 
     material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true});
 
     cubeMesh = new THREE.Mesh(geometry, material);
-    cubeMesh.position.set(x, y, z);
+    //é preciso isto??
+    //cubeMesh.position.set(x, y, z);
     bottomBase.add(cubeMesh);
 
     scene.add(bottomBase);
 
+
     bottomBase.position.x = x;
     bottomBase.position.y = y;
     bottomBase.position.z = z;
+
+    //inclined cube
+    bottomBase.rotation.x = 0.57;
+
+    //90º rotation through but fucks the initial inclination idkw
+    //let rotation = new THREE.Matrix4().makeRotationZ(1.57);
+    //bottomBase.applyMatrix(rotation);
+    //bottomBase.updateMatrix();
+
 }
 
 function createCone(x, y, z){
     'use strict';
+    renderer.clearDepth();                // clear depth buffer
+
     var bottomBase = new THREE.Object3D();
 
     geometry = new THREE.ConeGeometry(4, 10, 10);
@@ -52,7 +67,7 @@ function createScene() {
     scene = new THREE.Scene();
     scene.add(new THREE.AxisHelper(10));
     createBottomBase(0, 0, 0);
-    createCone(0, 5, 0);
+    createCone(0, 7, 0);
     
 }
 

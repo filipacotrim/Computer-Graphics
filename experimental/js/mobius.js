@@ -4,60 +4,58 @@
 
 var camera, scene, renderer, camera1, camera2, camera3;
 
-var geometry, material, cubeMesh, coneMesh;
+var geometryCone, geometryCube, materialCube, materialCone, cubeMesh, coneMesh;
+
+var cone, cube, group;
 
 var position;
 
 
-function createBottomBase(x, y, z){
+function createCube(x, y, z){
     'use strict';
-    var bottomBase = new THREE.Object3D();
+    cube = new THREE.Object3D();
     
-    geometry = new THREE.CubeGeometry(10,10,10);
+    geometryCube = new THREE.BoxGeometry(10, 10, 10, 5, 5, 5);
 
-    material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true});
+    materialCube = new THREE.MeshBasicMaterial({ color: 0x4192b8, wireframe: true});
 
-    cubeMesh = new THREE.Mesh(geometry, material);
-    //é preciso isto??
-    //cubeMesh.position.set(x, y, z);
-    bottomBase.add(cubeMesh);
+    cubeMesh = new THREE.Mesh(geometryCube, materialCube);
 
-    scene.add(bottomBase);
+    cubeMesh.position.x = x;
+    cubeMesh.position.y = y;
+    cubeMesh.position.z = z;
 
+    //não sei se é necessário
+    //cube.position.x = x;
+    //cube.position.y = y;
+    //cube.position.z = z;
 
-    bottomBase.position.x = x;
-    bottomBase.position.y = y;
-    bottomBase.position.z = z;
-
-    //inclined cube
-    bottomBase.rotation.x = 0.57;
-
-    //90º rotation through but fucks the initial inclination idkw
-    //let rotation = new THREE.Matrix4().makeRotationZ(1.57);
-    //bottomBase.applyMatrix(rotation);
-    //bottomBase.updateMatrix();
-
+    //cubeMesh.rotation.x = Math.PI/5;
+    //cubeMesh.rotation.z= Math.PI/3;    
 }
 
 function createCone(x, y, z){
     'use strict';
     renderer.clearDepth();                // clear depth buffer
 
-    var bottomBase = new THREE.Object3D();
+    cone = new THREE.Object3D();
 
-    geometry = new THREE.ConeGeometry(4, 10, 10);
+    geometryCone = new THREE.ConeGeometry(4, 10, 10);
+    materialCone = new THREE.MeshBasicMaterial({ color: 0xbc803d, wireframe: true});
+    coneMesh = new THREE.Mesh(geometryCone, materialCone);
 
-    material = new THREE.MeshBasicMaterial({ color: 0x00fff0, wireframe: true});
+    coneMesh.position.x = x;
+    coneMesh.position.y = y;
+    coneMesh.position.z = z;
 
-    coneMesh = new THREE.Mesh(geometry, material);
-    coneMesh.position.set(x, y, z);
-    bottomBase.add(coneMesh);
+    //nao sei se é necessário
+    //cone.position.x = x;
+    //cone.position.y = y;
+    //cone.position.z = z;
 
-    scene.add(bottomBase);
+    coneMesh.rotation.x = Math.PI;
+    coneMesh.rotation.z = Math.PI/6;
 
-    bottomBase.position.x = x;
-    bottomBase.position.y = y;
-    bottomBase.position.z = z;
 }
 
 
@@ -66,14 +64,19 @@ function createScene() {
 
     scene = new THREE.Scene();
     scene.add(new THREE.AxisHelper(10));
-    createBottomBase(0, 0, 0);
-    createCone(0, 7, 0);
+    createCube(0, 0, 0);
+
+    createCone(0, 10, 0);
     
+    group = new THREE.Group();
+    group.add(cubeMesh);
+    group.add(coneMesh);
+    scene.add(group);
 }
 
 function createCamera() {
     'use strict';
-    camera1 = new THREE.PerspectiveCamera(70,
+    camera1 = new THREE.PerspectiveCamera(50,
                                          window.innerWidth / window.innerHeight,
                                          1,
                                          1000);
@@ -160,23 +163,27 @@ function onKeyDown(e) {
         break;
     
     case 81: //q
-        coneMesh.rotateY(-0.2);
+        //coneMesh.rotateY(-0.2);
+        coneMesh.rotation.y -= 0.2;
         break;
     
     case 87: //w
-        coneMesh.rotateY(0.2);
+        //coneMesh.rotateY(0.2);
+        coneMesh.rotation.y += 0.2;
         break;
     
     case 65: //a
-        cubeMesh.rotateY(-0.1);
-        //cubeMesh.rotateX(-0.05);
-        coneMesh.rotateY(-0.1);
+        //cubeMesh.rotateY(-0.1);
+        ////cubeMesh.rotateX(-0.05);
+        //coneMesh.rotateY(-0.1);
         //coneMesh.rotateX(-0.05);
+        group.rotateY(-0.1);
         break;
     
     case 83: //s
-        cubeMesh.rotateY(0.1);
-        coneMesh.rotateY(0.1);
+        //cubeMesh.rotateY(0.1);
+        //coneMesh.rotateY(0.1);
+        group.rotateY(0.1);
         break;
         
     }

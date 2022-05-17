@@ -4,12 +4,15 @@
 
 var camera, scene, renderer, camera1, camera2, camera3;
 
-var geometryCone, geometryCube, geometryTorus, geometryPyramid;
-var materialCube, materialCone, materialTorus, materialPyramid;
-var sphereMesh, geometrySphere, materialSphere;
+var geometryCone, geometryCube, geometryTorus, geometryPyramid, geometryCuboid;
+var materialCube, materialCone, materialTorus, materialPyramid, materialCuboid;
+var sphereMesh, geometrySphere, materialSphere, materialCuboid;
 var cubeMesh, coneMesh, torusMesh, pyramidMesh;
+var cuboidMesh, cuboid2Mesh, tubeMesh, boxMesh, weirdMesh, ringMesh, ring2Mesh, sphere2Mesh, sphere3Mesh;
 
 var cone, cube, bigGroup, mediumGroup, temp = false;
+
+var angle,cuboid, geometry, material;
 
 var position, t=0;
 
@@ -26,15 +29,9 @@ function createCube(x, y, z){
 
     cubeMesh.position.x = x;
     cubeMesh.position.y = y;
-    cubeMesh.position.z = z;
+    cubeMesh.position.z = z;  
 
-    //não sei se é necessário
-    //cube.position.x = x;
-    //cube.position.y = y;
-    //cube.position.z = z;
-
-    //cubeMesh.rotation.x = Math.PI/5;
-    //cubeMesh.rotation.z= Math.PI/3;    
+    cubeMesh.rotation.x = Math.PI/4;
 }
 
 function createCone(x, y, z){
@@ -49,11 +46,7 @@ function createCone(x, y, z){
     coneMesh.position.x = x;
     coneMesh.position.y = y;
     coneMesh.position.z = z;
-
-    //nao sei se é necessário
-    //cone.position.x = x;
-    //cone.position.y = y;
-    //cone.position.z = z;
+    
 
     coneMesh.rotation.x = Math.PI;
     //coneMesh.rotation.z = Math.PI/6;
@@ -62,13 +55,15 @@ function createCone(x, y, z){
 
 function createTorus(x, y, z){
     'use strict';
-    geometryTorus = new THREE.TorusGeometry(4, 1, 10, 80);
-    materialTorus = new THREE.MeshBasicMaterial({ color: 0xcb921f, wireframe: true});
+    geometryTorus = new THREE.TorusGeometry(15, 1, 10, 80);
+    materialTorus = new THREE.MeshBasicMaterial({ color: 0xfffff, wireframe: true});
     torusMesh = new THREE.Mesh(geometryTorus, materialTorus);
 
     torusMesh.position.x = x;
     torusMesh.position.y = y;
     torusMesh.position.z = z;
+
+    //torusMesh.position.y = Math.PI/2;
 
 }
 
@@ -99,16 +94,166 @@ function createSphere(x, y, z){
 
 }
 
+function createSphere2(x, y, z){
+    'use strict';
+    //SphereGeometry(radius : Float, widthSegments : Integer, heightSegments : Integer, phiStart : Float, phiLength : Float, thetaStart : Float, thetaLength : Float)
+    geometrySphere = new THREE.SphereGeometry(4, 32, 16);
+    materialSphere = new THREE.MeshBasicMaterial({ color: 0x40ffb1, wireframe: true});
+    sphere2Mesh = new THREE.Mesh(geometrySphere, materialSphere);
+
+    sphere2Mesh.position.x = x;
+    sphere2Mesh.position.y = y;
+    sphere2Mesh.position.z = z;
+
+}
+
+function createSphere3(x, y, z){
+    'use strict';
+    //SphereGeometry(radius : Float, widthSegments : Integer, heightSegments : Integer, phiStart : Float, phiLength : Float, thetaStart : Float, thetaLength : Float)
+    geometrySphere = new THREE.SphereGeometry(2, 32, 16);
+    materialSphere = new THREE.MeshBasicMaterial({ color: 0x40ffb1, wireframe: true});
+    sphere3Mesh = new THREE.Mesh(geometrySphere, materialSphere);
+
+    sphere3Mesh.position.x = x;
+    sphere3Mesh.position.y = y;
+    sphere3Mesh.position.z = z;
+
+}
+
+
+
+function createCuboid1(x, y, z){
+    'use strict';
+    //BoxGeometry(width : Float, height : Float, depth : Float, 
+    //widthSegments : Integer, heightSegments : Integer, depthSegments : Integer)
+    geometryCuboid = new THREE.BoxGeometry(1, 20, 1, 2, 2, 2);
+
+    materialCuboid = new THREE.MeshBasicMaterial({ color: 0xe1ff4d, wireframe: true});
+
+    cuboidMesh = new THREE.Mesh(geometryCuboid, materialCuboid);
+
+    cuboidMesh.position.x = x;
+    cuboidMesh.position.y = y;
+    cuboidMesh.position.z = z; 
+
+    cuboidMesh.rotation.x = Math.PI/7;
+    
+}
+
+function createCuboid2(x, y, z){
+    'use strict';
+    //BoxGeometry(width : Float, height : Float, depth : Float, 
+    //widthSegments : Integer, heightSegments : Integer, depthSegments : Integer)
+    geometryCuboid = new THREE.BoxGeometry(1, 20, 1, 2, 2, 2);
+
+    materialCuboid = new THREE.MeshBasicMaterial({ color: 0x8ed4ff, wireframe: true});
+
+    cuboid2Mesh = new THREE.Mesh(geometryCuboid, materialCuboid);
+
+    cuboid2Mesh.position.x = x;
+    cuboid2Mesh.position.y = y;
+    cuboid2Mesh.position.z = z;
+
+    cuboid2Mesh.rotation.x = -Math.PI/7;
+}
+
+function setupCuboids() {
+    let geometry = new THREE.BoxGeometry(3, 1, 0.35);
+    cuboids = [];
+    addCuboidRing(5, geometry);
+}
+
+function addCuboidRing(radius, geometry) {
+    for(let i = 1; i <= 10; i++) {
+      let angle = i / 10 * Math.PI * 2;
+      material = new THREE.MeshBasicMaterial({ color: 0x49ff3d*i, wireframe: true});
+      let cuboid = new THREE.Mesh(geometry, material);
+      cuboid.position.x = Math.cos(angle) * radius +35;
+      cuboid.position.y = Math.sin(angle) * radius+ 10;
+      cuboid.position.z = 10;
+      cuboid.rotateY(i / 10 * Math.PI);
+      cuboid.rotation.x = Math.PI / 2;
+      scene.add(cuboid);
+      cuboids.push(cuboid);
+    }
+}
+  
+function createTube(x, y, z){
+    'use strict';
+    geometry = new THREE.TorusKnotGeometry( 10, 1.485, 100, 16, 2, 1 );
+    material = new THREE.MeshBasicMaterial( { color: 0xcda052, wireframe: true } );
+    tubeMesh = new THREE.Mesh( geometry, material );
+
+    tubeMesh.position.set(x, y, z);
+}
+
+function createBox(x, y, z){
+    'use strict';
+
+    geometry = new THREE.BoxGeometry(2, 3, 40, 3, 3, 3);
+    material = new THREE.MeshBasicMaterial( { color: 0xffc2c2 , wireframe: true } );
+    boxMesh = new THREE.Mesh( geometry, material );
+
+    boxMesh.position.set(x, y, z);
+    boxMesh.rotation.x = Math.PI/8;
+}
+
+function createWeird(x, y, z){
+    'use strict';
+
+    //TorusKnotGeometry(radius : Float, tube : Float, tubularSegments : Integer, radialSegments : Integer, p : Integer, q : Integer)
+
+    geometry = new THREE.TorusKnotGeometry( 7,1,100,16);
+    material = new THREE.MeshBasicMaterial( { color: 0xfd46a7, wireframe: true } );
+    weirdMesh = new THREE.Mesh( geometry, material );
+
+
+    weirdMesh.position.set(x, y, z);
+    weirdMesh.rotation.x = Math.PI/4;
+}
+
+function createRing(x, y, z){
+    'use strict';
+
+    //RingGeometry(innerRadius : Float, outerRadius : Float, thetaSegments : Integer, phiSegments : Integer, thetaStart : Float, thetaLength : Float)
+    geometry = new THREE.RingGeometry(5,8, 12,6);
+    material = new THREE.MeshBasicMaterial( { color: 0xf73131, side: THREE.DoubleSide, wireframe: true } );
+    ringMesh = new THREE.Mesh( geometry, material );
+    
+    ringMesh.position.x = x;
+    ringMesh.position.y = y;
+    ringMesh.position.z = z;
+
+    ringMesh.rotation.x = -Math.PI/2;
+    ringMesh.rotation.y = Math.PI/6;
+}
+
+function createRing2(x, y, z){
+    'use strict';
+
+    //RingGeometry(innerRadius : Float, outerRadius : Float, thetaSegments : Integer, phiSegments : Integer, thetaStart : Float, thetaLength : Float)
+    geometry = new THREE.RingGeometry(5,8, 12,6);
+    material = new THREE.MeshBasicMaterial( { color: 0x7c63f8, side: THREE.DoubleSide, wireframe: true } );
+    ring2Mesh = new THREE.Mesh( geometry, material );
+    
+    ring2Mesh.position.x = x;
+    ring2Mesh.position.y = y;
+    ring2Mesh.position.z = z;
+
+    ring2Mesh.rotation.x = -Math.PI;
+    ring2Mesh.rotation.y = Math.PI/3;
+}
+
 
 function createScene() {
     'use strict';
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x4d1d13);
+    scene.background = new THREE.Color(0x07023c);
     scene.add(new THREE.AxisHelper(10));
     createCube(0, 0, 0);
-    createCone(0, 16.5, 0);
-    createTorus(0, 10, 0);
+    //createCone(0, 16.5, 0);
+    createTorus(0, 0, 0);
     
     
 
@@ -126,6 +271,24 @@ function createScene() {
     scene.add(pyramidMesh);
     createSphere(-40, 13, -20);
     scene.add(sphereMesh);
+    createCuboid1(-8,8,28);
+    scene.add(cuboidMesh);
+    createCuboid2(-4,8,28);
+    scene.add(cuboid2Mesh);
+    setupCuboids();
+
+    createBox(10, 3, -40);
+    createTube(0, 0, -40);
+    scene.add(boxMesh);
+    scene.add(tubeMesh);
+    createWeird(-12,3,45);
+    scene.add(weirdMesh);
+    createRing(-52,7,20);
+    scene.add(ringMesh);
+    createRing2(-48,7,25);
+    scene.add(ring2Mesh);
+    createSphere2(-55,13,-10);
+    scene.add(sphere2Mesh);
 }
 
 function createCamera() {
@@ -145,7 +308,7 @@ function createCamera() {
                                           1000);
     
     camera2.position.x = 0;
-    camera2.position.y = 50;
+    camera2.position.y = 70;
     camera2.position.z = 0;
     camera2.lookAt(scene.position);
 
@@ -156,7 +319,7 @@ function createCamera() {
 
     camera3.position.x = 0;
     camera3.position.y = 0;
-    camera3.position.z = 50;
+    camera3.position.z = 70;
     camera3.lookAt(scene.position);
     
     camera = camera1;

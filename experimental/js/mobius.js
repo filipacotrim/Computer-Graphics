@@ -7,10 +7,10 @@ var camera, scene, renderer, camera1, camera2, camera3;
 var geometryCone, geometryCube, geometryTorus, geometryPyramid, geometryCuboid;
 var materialCube, materialCone, materialTorus, materialPyramid, materialCuboid;
 var sphereMesh, geometrySphere, materialSphere, materialCuboid;
-var cubeMesh, coneMesh, torusMesh, pyramidMesh;
+var cubeMesh, sphereGroup, torusMesh, pyramidMesh;
 var cuboidMesh, cuboid2Mesh, tubeMesh, boxMesh, weirdMesh, ringMesh, ring2Mesh, sphere2Mesh, sphere3Mesh;
 
-var cone, cube, bigGroup, mediumGroup, temp = false;
+var cone, cube, bigGroup, mediumGroup, sphereGroup, temp = false;
 
 var angle,cuboid, geometry, material;
 
@@ -41,15 +41,15 @@ function createCone(x, y, z){
 
     geometryCone = new THREE.ConeGeometry(1.5, 3, 10, 4);
     materialCone = new THREE.MeshBasicMaterial({ color: 0xd5f1eb, wireframe: true});
-    coneMesh = new THREE.Mesh(geometryCone, materialCone);
+    sphereGroup = new THREE.Mesh(geometryCone, materialCone);
 
-    coneMesh.position.x = x;
-    coneMesh.position.y = y;
-    coneMesh.position.z = z;
+    sphereGroup.position.x = x;
+    sphereGroup.position.y = y;
+    sphereGroup.position.z = z;
     
 
-    coneMesh.rotation.x = Math.PI;
-    //coneMesh.rotation.z = Math.PI/6;
+    sphereGroup.rotation.x = Math.PI;
+    //sphereGroup.rotation.z = Math.PI/6;
 
 }
 
@@ -63,7 +63,7 @@ function createTorus(x, y, z){
     torusMesh.position.y = y;
     torusMesh.position.z = z;
 
-    //torusMesh.position.y = Math.PI/2;
+    //torusMesh.rotation.x = Math.PI/2;
 
 }
 
@@ -110,8 +110,8 @@ function createSphere2(x, y, z){
 function createSphere3(x, y, z){
     'use strict';
     //SphereGeometry(radius : Float, widthSegments : Integer, heightSegments : Integer, phiStart : Float, phiLength : Float, thetaStart : Float, thetaLength : Float)
-    geometrySphere = new THREE.SphereGeometry(2, 32, 16);
-    materialSphere = new THREE.MeshBasicMaterial({ color: 0x40ffb1, wireframe: true});
+    geometrySphere = new THREE.SphereGeometry(2.5, 32, 16);
+    materialSphere = new THREE.MeshBasicMaterial({ color: 0xfc7227, wireframe: true});
     sphere3Mesh = new THREE.Mesh(geometrySphere, materialSphere);
 
     sphere3Mesh.position.x = x;
@@ -254,11 +254,13 @@ function createScene() {
     createCube(0, 0, 0);
     //createCone(0, 16.5, 0);
     createTorus(0, 0, 0);
-    
+    createSphere3(0,18.5,0);
     
 
     mediumGroup = new THREE.Group();
-    mediumGroup.add(coneMesh);
+    sphereGroup = new THREE.Group();
+    sphereGroup.add(sphere3Mesh);
+    mediumGroup.add(sphere3Mesh);
     mediumGroup.add(torusMesh);
     //scene.add(mediumGroup);
 
@@ -344,17 +346,11 @@ function render() {
 
 
 function rotateMediumGroupLeft(amount){
-    if(mediumGroup.rotation.z < 0.299){
+   if(mediumGroup.rotation.z < 0.299){
         mediumGroup.rotateZ(amount);
     }
 }
 
-
-function rotateMediumGroupRight(amount){
-    if(mediumGroup.rotation.z > -0.299){
-        mediumGroup.rotateZ(amount);
-    }
-}
 
 
 
@@ -396,35 +392,31 @@ function onKeyDown(e) {
         break;
     
     case 81: //q
-        //if(temp == false){
-        //    coneMesh.position.set(0, -3, 0);
-        //    coneMesh.geometry.applyMatrix(new THREE.Matrix4().makeTranslation( 0, 3, 0 ));
-        //    temp = true;
-        //}
-        //
-        //coneMesh.rotation.x += 0.1;
-        //coneMesh.position.z = 4*Math.sin(t) + 0;
-        //coneMesh.position.y = 4*Math.cos(t) + 15;
-        //t += 0.1;
-        coneMesh.rotateY(0.1);
+        //var point = new THREE.Vector3(0,100,0);
+        //sphere3Mesh.lookAt(point);
+        sphere3Mesh.rotation.x -= 0.1;
+        sphere3Mesh.position.z = 3.7*Math.cos(t);
+        sphere3Mesh.position.y = 3.7*Math.sin(t) + 15;
+        t += 0.1;
         break;
     
     case 87: //w
         //if(temp == false){
-        //    coneMesh.position.set(0, -3, 0);
-        //    coneMesh.geometry.applyMatrix(new THREE.Matrix4().makeTranslation( 0, 3, 0 ));
+        //    sphereGroup.position.set(0, -3, 0);
+        //    sphereGroup.geometry.applyMatrix(new THREE.Matrix4().makeTranslation( 0, 3, 0 ));
         //    temp = true;
         //}
         //
-        //coneMesh.rotation.x -= 0.1;
-        //coneMesh.position.z = 4*Math.cos(t) + 0;
-        //coneMesh.position.y = 4*Math.sin(t) + 15;
+        //sphereGroup.rotation.x -= 0.1;
+        //sphereGroup.position.z = 4*Math.cos(t) + 0;
+        //sphereGroup.position.y = 4*Math.sin(t) + 15;
         //t += 0.1;
-        coneMesh.rotateY(-0.1);
+        sphereGroup.rotateY(-0.1);
 
         break;
     
     case 65: //a
+        
         bigGroup.rotateY(-0.1);
         break;
     
@@ -433,13 +425,14 @@ function onKeyDown(e) {
         break;
     
     case 90: //z
-        //mediumGroup.rotateZ(0.1);
-        rotateMediumGroupLeft(0.02);
+        mediumGroup.rotateY(0.05);
+        mediumGroup.rotateZ(0.05);
         break;
     
     case 88: //x
-        //mediumGroup.rotateZ(-0.1);
-        rotateMediumGroupRight(-0.02);
+        mediumGroup.rotateY(-0.05);
+        mediumGroup.rotateZ(-0.05);
+        //rotateMediumGroupRight(-0.02);
         break;
 
         

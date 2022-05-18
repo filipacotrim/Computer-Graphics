@@ -321,50 +321,57 @@ function createScene() {
     scene.add(cuboid2Mesh);
     setupCuboids();
 
-    createBox(10, 3, -40);
-    createTube(0, 0, -40);
+    createBox(10, -17, -40);
+    createTube(0, -20, -40);
     scene.add(boxMesh);
     scene.add(tubeMesh);
     createWeird(-20,3,40);
     scene.add(weirdMesh);
-    //createRing(-52,7,20);
-    //scene.add(ringMesh);
-    //createRing2(-48,7,25);
-    //scene.add(ring2Mesh);
     createSphere2(-55,13,-10);
     scene.add(sphere2Mesh);
 }
 
 function createCamera() {
     'use strict';
-    camera1 = new THREE.PerspectiveCamera(50,
-                                         window.innerWidth / window.innerHeight,
-                                         1,
-                                         1000);
-    camera1.position.x = 50;
-    camera1.position.y = 50;
-    camera1.position.z = 50;
-    camera1.lookAt(scene.position);
-
-    camera2 = new THREE.PerspectiveCamera(70,
-                                          window.innerWidth / window.innerHeight,
-                                          1,
-                                          1000);
+    camera2 = new THREE.OrthographicCamera(window.innerWidth / (- 2*10),
+                                           window.innerWidth / (2*10),
+                                           window.innerHeight / (2*10),
+                                           window.innerHeight / (- 2*10),
+                                           1,
+                                           1000
+                                           );
     
     camera2.position.x = 0;
-    camera2.position.y = 70;
+    camera2.position.y = 100;
     camera2.position.z = 0;
     camera2.lookAt(scene.position);
 
-    camera3 = new THREE.PerspectiveCamera(70,
-                                          window.innerWidth / window.innerHeight,
-                                          1,
-                                          1000);
+    camera3 = new THREE.OrthographicCamera(window.innerWidth / (- 2*7),
+                                           window.innerWidth / (2*7),
+                                           window.innerHeight / (2*7),
+                                           window.innerHeight / (- 2*7),
+                                           1,
+                                           1000
+                                           );
 
     camera3.position.x = 0;
     camera3.position.y = 0;
     camera3.position.z = 70;
     camera3.lookAt(scene.position);
+
+    camera1 = new THREE.OrthographicCamera(window.innerWidth / (- 2*7),
+                                           window.innerWidth / (2*7),
+                                           window.innerHeight / (2*7),
+                                           window.innerHeight / (- 2*7),
+                                           1,
+                                           1000
+                                           );
+    
+    camera1.position.x = 50;
+    camera1.position.y = 50;
+    camera1.position.z = 50;
+    camera1.lookAt(scene.position);
+                    
     
     camera = camera1;
 }
@@ -434,8 +441,6 @@ function onKeyDown(e) {
         break;
     
     case 81: //q
-        //var point = new THREE.Vector3(0,100,0);
-        //sphere3Mesh.lookAt(point);
         sphere3Mesh.rotation.x -= 0.1;
         sphere3Mesh.position.z = 3.65*Math.cos(t);
         sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
@@ -443,16 +448,6 @@ function onKeyDown(e) {
         break;
     
     case 87: //w
-        //if(temp == false){
-        //    sphereGroup.position.set(0, -3, 0);
-        //    sphereGroup.geometry.applyMatrix(new THREE.Matrix4().makeTranslation( 0, 3, 0 ));
-        //    temp = true;
-        //}
-        //
-        //sphereGroup.rotation.x -= 0.1;
-        //sphereGroup.position.z = 4*Math.cos(t) + 0;
-        //sphereGroup.position.y = 4*Math.sin(t) + 15;
-        //t += 0.1;
         sphere3Mesh.rotation.x -= 0.1;
         sphere3Mesh.position.z = 3.65*Math.cos(t);
         sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;

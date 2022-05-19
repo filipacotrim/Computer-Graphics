@@ -388,8 +388,6 @@ function onKeyDown(e) {
     
     case 37: //left arrow
         leftActive = true;
-        console.log("LEFT CRL");
-        console.log(leftActive);
         break;
     
     case 38: //up arrow
@@ -420,22 +418,6 @@ function onKeyUp(e) {
     case 101: //e
         eActive = false;
         break;
-    case 49: // 1
-        oneActive = false;
-        break;
-    
-    case 50: // 2
-        twoActive = false;
-        break;
-
-    case 51: // 3
-        threeActive = false;
-        break;
-    
-    case 52: // 4
-        fourActive = false;
-        break;
-    
     case 81: //q
         qActive = false;
         break;
@@ -509,7 +491,6 @@ function animate() {
         sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
         t += 0.1;
         console.log(t);
-        //qActive = false;
     }
 
     if(wActive){
@@ -517,47 +498,42 @@ function animate() {
         sphere3Mesh.position.z = 3.65*Math.cos(t);
         sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
         t -= 0.1;
-        //wActive = false;
     }
 
     if(aActive){
         bigGroup.rotateY(-0.3);
-        //aActive = false;
     }
 
     if(sActive){
         bigGroup.rotateY(0.3);
-        //sActive = false;
     }
 
     if(zActive){
         mediumGroup.rotateY(0.2);
         mediumGroup.rotateZ(0.2);
-        //zActive = false;
     }
 
     if(xActive){
         mediumGroup.rotateY(-0.2);
         mediumGroup.rotateZ(-0.2);
-        //xActive = false;
     }
 
     if(oneActive){
         console.log("change camera to camera1");
         camera = camera1;
-        //oneActive = false;
+        oneActive = false;
     }
 
     if(twoActive){
         console.log("change camera to camera2");
         camera = camera2;
-        //twoActive = false;
+        twoActive = false;
     }
 
     if(threeActive){
         console.log("change camera to camera3");
         camera = camera3;
-        //threeActive = false;
+        threeActive = false;
     }
 
     if(fourActive){
@@ -567,7 +543,7 @@ function animate() {
                 node.material.wireframe = !node.material.wireframe;
             }
         }); 
-        //fourActive = false;
+        fourActive = false;
     }
 
     if(eActive){
@@ -577,45 +553,29 @@ function animate() {
                 node.visible = !node.visible;
             }
         });
-        //eActive = false;
     }
     var a = new THREE.Vector3( 0, 0, 0);
     if(rightActive){
-        //bigGroup.translateZ(0.5);
-        //rightActive = false;
         a.add(new THREE.Vector3(0,0,-10));
     }
 
     if(leftActive){
-        //bigGroup.translateZ(-0.5);
-        //leftActive = false;
         a.add(new THREE.Vector3(0,0,10));
     }
 
     if(downActive){
-        //bigGroup.translateY(-0.5);
-        //downActive = false;
         a.add(new THREE.Vector3(0,-10,0));
     }
 
     if(upActive){
-        //bigGroup.translateY(0.5);
-        console.log(upActive);
-        console.log(leftActive);
-        console.log("------------------");
-        //upActive = false;
         a.add(new THREE.Vector3(0,10,0));
     }
 
     if(cActive){
-        //bigGroup.translateX(0.5);
-        //cActive = false;
         a.add(new THREE.Vector3(10,0,0));
     }
 
     if(dActive){
-        //bigGroup.translateX(-0.5);
-        //dActive = false;
         a.add(new THREE.Vector3(-10,0,0));
     }
     a.normalize();

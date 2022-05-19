@@ -57,9 +57,7 @@ function createTorus(x, y, z){
     torusMesh.position.x = x;
     torusMesh.position.y = y;
     torusMesh.position.z = z;
-
-    //torusMesh.rotation.x = Math.PI/2;
-
+    
 }
 
 function createPyramid(x, y, z){

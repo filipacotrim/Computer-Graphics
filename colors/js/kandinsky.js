@@ -11,6 +11,7 @@ var cubeMesh, sphereGroup, torusMesh, pyramidMesh;
 var cuboidMesh, cuboid2Mesh, tubeMesh, boxMesh, weirdMesh, ringMesh, ring2Mesh, sphere2Mesh, sphere3Mesh;
 var qActive, wActive, aActive, sActive, zActive;
 var xActive, oneActive, twoActive, threeActive, fourActive, eActive;
+var rightActive, leftActive, upActive, downActive, dActive, cActive;
 
 
 var cone, cube, bigGroup, mediumGroup, sphereGroup, temp = false;
@@ -38,25 +39,6 @@ function createCube(x, y, z){
     cubeMesh.position.z = z;  
 
     cubeMesh.rotation.x = Math.PI/4;
-}
-
-function createCone(x, y, z){
-    'use strict';
-
-    cone = new THREE.Object3D();
-
-    geometryCone = new THREE.ConeGeometry(1.5, 3, 10, 4);
-    materialCone = new THREE.MeshPhongMaterial({ color: 0xd5f1eb, wireframe: true});
-    sphereGroup = new THREE.Mesh(geometryCone, materialCone);
-
-    sphereGroup.position.x = x;
-    sphereGroup.position.y = y;
-    sphereGroup.position.z = z;
-    
-
-    sphereGroup.rotation.x = Math.PI;
-    //sphereGroup.rotation.z = Math.PI/6;
-
 }
 
 function createTorus(x, y, z){
@@ -92,7 +74,6 @@ function createPyramid(x, y, z){
     pyramidMesh.position.z = z;
 
     pyramidMesh.rotation.z = -Math.PI/6;
-
 }
 
 function createSphere(x, y, z){
@@ -215,7 +196,6 @@ function createTube(x, y, z){
         wireframe: true 
     } );
     tubeMesh = new THREE.Mesh( geometry, material );
-
     tubeMesh.position.set(x, y, z);
 }
 
@@ -237,7 +217,6 @@ function createBox(x, y, z){
 
 function createWeird(x, y, z){
     'use strict';
-
     //TorusKnotGeometry(radius : Float, tube : Float, tubularSegments : Integer, radialSegments : Integer, p : Integer, q : Integer)
 
     geometry = new THREE.TorusKnotGeometry( 13,1,100,16);
@@ -247,38 +226,6 @@ function createWeird(x, y, z){
 
     weirdMesh.position.set(x, y, z);
     weirdMesh.rotation.x = Math.PI/4;
-}
-
-function createRing(x, y, z){
-    'use strict';
-
-    //RingGeometry(innerRadius : Float, outerRadius : Float, thetaSegments : Integer, phiSegments : Integer, thetaStart : Float, thetaLength : Float)
-    geometry = new THREE.RingGeometry(5,8, 12,6);
-    material = new THREE.MeshPhongMaterial( { color: 0xf73131, side: THREE.DoubleSide, wireframe: true } );
-    ringMesh = new THREE.Mesh( geometry, material );
-    
-    ringMesh.position.x = x;
-    ringMesh.position.y = y;
-    ringMesh.position.z = z;
-
-    ringMesh.rotation.x = -Math.PI/2;
-    ringMesh.rotation.y = Math.PI/6;
-}
-
-function createRing2(x, y, z){
-    'use strict';
-
-    //RingGeometry(innerRadius : Float, outerRadius : Float, thetaSegments : Integer, phiSegments : Integer, thetaStart : Float, thetaLength : Float)
-    geometry = new THREE.RingGeometry(5,8, 12,6);
-    material = new THREE.MeshPhongMaterial( { color: 0x7c63f8, side: THREE.DoubleSide, wireframe: true } );
-    ring2Mesh = new THREE.Mesh( geometry, material );
-    
-    ring2Mesh.position.x = x;
-    ring2Mesh.position.y = y;
-    ring2Mesh.position.z = z;
-
-    ring2Mesh.rotation.x = -Math.PI;
-    ring2Mesh.rotation.y = Math.PI/3;
 }
 
 
@@ -396,7 +343,6 @@ function render() {
 
 function onKeyDown(e) {
     'use strict';
-
     switch (e.keyCode) {
     case 69:  //E
     case 101: //e
@@ -441,8 +387,29 @@ function onKeyDown(e) {
     case 88: //x
         xActive = true;        
         break;
-
-        
+    
+    case 37: //left arrow
+        leftActive = true;
+        break;
+    
+    case 38: //up arrow
+        upActive = true;
+        break;
+    
+    case 39: //right arrow
+        rightActive = true;
+        break;
+    
+    case 40: //down arrow
+        downActive = true;
+        break;
+    
+    case 68:
+        dActive = true;
+        break;
+    
+    case 67:
+        cActive = true;
     }
 }
 
@@ -456,7 +423,6 @@ function init() {
 
     createScene();
     createCamera();
-
 
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("resize", onResize);
@@ -472,54 +438,55 @@ function animate() {
         console.log(t);
         qActive = false;
     }
+
     if(wActive){
         sphere3Mesh.rotation.x -= 0.1;
         sphere3Mesh.position.z = 3.65*Math.cos(t);
         sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
         t -= 0.1;
         wActive = false;
-
     }
+
     if(aActive){
         bigGroup.rotateY(-0.3);
         aActive = false;
-
     }
+
     if(sActive){
         bigGroup.rotateY(0.3);
         sActive = false;
-
     }
+
     if(zActive){
         mediumGroup.rotateY(0.2);
         mediumGroup.rotateZ(0.2);
         zActive = false;
-
     }
+
     if(xActive){
         mediumGroup.rotateY(-0.2);
         mediumGroup.rotateZ(-0.2);
         xActive = false;
-
     }
+
     if(oneActive){
         console.log("change camera to camera1");
         camera = camera1;
         oneActive = false;
-
     }
+
     if(twoActive){
         console.log("change camera to camera2");
         camera = camera2;
         twoActive = false;
-
     }
+
     if(threeActive){
         console.log("change camera to camera3");
         camera = camera3;
         threeActive = false;
-
     }
+
     if(fourActive){
         console.log("toggle wireframe");
         scene.traverse(function (node) {
@@ -528,17 +495,46 @@ function animate() {
             }
         }); 
         fourActive = false;
-
     }
+
     if(eActive){
         scene.traverse(function (node) {
-            if (node instanceof THREE.AxisHelper) {
+            if (node instanceof THREE.AxisHelper){
                 console.log("case");
                 node.visible = !node.visible;
             }
         });
         eActive = false;
+    }
 
+    if(rightActive){
+        bigGroup.translateZ(0.5);
+        rightActive = false;
+    }
+
+    if(leftActive){
+        bigGroup.translateZ(-0.5);
+        leftActive = false;
+    }
+
+    if(downActive){
+        bigGroup.translateY(-0.5);
+        downActive = false;
+    }
+
+    if(upActive){
+        bigGroup.translateY(0.5);
+        upActive = false;
+    }
+
+    if(cActive){
+        bigGroup.translateX(0.5);
+        cActive = false;
+    }
+
+    if(dActive){
+        bigGroup.translateX(-0.5);
+        dActive = false;
     }
     
     render();

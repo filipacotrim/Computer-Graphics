@@ -183,9 +183,9 @@ function createCuboid2(x, y, z){
 }
 
 function setupCuboids() {
-    let geometry = new THREE.BoxGeometry(3, 1, 0.35);
+    let geometry = new THREE.BoxGeometry(3, 10, 0.35);
     cuboids = [];
-    addCuboidRing(5, geometry);
+    addCuboidRing(10, geometry);
 }
 
 function addCuboidRing(radius, geometry) {
@@ -193,8 +193,8 @@ function addCuboidRing(radius, geometry) {
       let angle = i / 10 * Math.PI * 2;
       material = new THREE.MeshPhongMaterial({ color: 0x49ff3d*i, wireframe: true});
       let cuboid = new THREE.Mesh(geometry, material);
-      cuboid.position.x = Math.cos(angle) * radius +35;
-      cuboid.position.y = Math.sin(angle) * radius+ 10;
+      cuboid.position.x = Math.cos(angle) * radius +65;
+      cuboid.position.y = Math.sin(angle) * radius+ 20;
       cuboid.position.z = 10;
       cuboid.rotateY(i / 10 * Math.PI);
       cuboid.rotation.x = Math.PI / 2;
@@ -237,7 +237,7 @@ function createWeird(x, y, z){
 
     //TorusKnotGeometry(radius : Float, tube : Float, tubularSegments : Integer, radialSegments : Integer, p : Integer, q : Integer)
 
-    geometry = new THREE.TorusKnotGeometry( 7,1,100,16);
+    geometry = new THREE.TorusKnotGeometry( 13,1,100,16);
     material = new THREE.MeshNormalMaterial( { wireframe: true } );
     weirdMesh = new THREE.Mesh( geometry, material );
 
@@ -311,58 +311,58 @@ function createScene() {
     bigGroup.add(mediumGroup);
     scene.add(bigGroup);
 
-    createPyramid(-55,15,-20);
+    createPyramid(-60,3,-3.5);
     scene.add(pyramidMesh);
-    createSphere(-40, 13, -20);
+    createSphere(-60, 3, 20);
     scene.add(sphereMesh);
-    createCuboid1(-8,8,28);
+    createCuboid1(18,13,48);
     scene.add(cuboidMesh);
-    createCuboid2(-4,8,28);
+    createCuboid2(20,13,48);
     scene.add(cuboid2Mesh);
     setupCuboids();
 
-    createBox(10, -17, -40);
-    createTube(0, -20, -40);
+    createBox(10, 10, -40);
+    createTube(0, 13, -40);
     scene.add(boxMesh);
     scene.add(tubeMesh);
-    createWeird(-20,3,40);
+    createWeird(-20,-3,50);
     scene.add(weirdMesh);
-    createSphere2(-55,13,-10);
+    createSphere2(-47,3,14);
     scene.add(sphere2Mesh);
 }
 
 function createCamera() {
     'use strict';
-    camera2 = new THREE.OrthographicCamera(window.innerWidth / (- 2*10),
-                                           window.innerWidth / (2*10),
-                                           window.innerHeight / (2*10),
-                                           window.innerHeight / (- 2*10),
-                                           1,
-                                           1000
-                                           );
+    camera2 = new THREE.OrthographicCamera(window.innerWidth / (- 2*12),
+                                            window.innerWidth / (2*12),
+                                            window.innerHeight / (2*12),
+                                            window.innerHeight / (- 2*12),
+                                            1,
+                                            1000
+                                            );
     
     camera2.position.x = 0;
-    camera2.position.y = 100;
+    camera2.position.y = 70;
     camera2.position.z = 0;
     camera2.lookAt(scene.position);
 
-    camera3 = new THREE.OrthographicCamera(window.innerWidth / (- 2*7),
-                                           window.innerWidth / (2*7),
-                                           window.innerHeight / (2*7),
-                                           window.innerHeight / (- 2*7),
-                                           1,
-                                           1000
-                                           );
+    camera3 = new THREE.OrthographicCamera(window.innerWidth / (- 2*12),
+                                            window.innerWidth / (2*12),
+                                            window.innerHeight / (2*12),
+                                            window.innerHeight / (- 2*12),
+                                            1,
+                                            1000
+                                            );
 
     camera3.position.x = 0;
     camera3.position.y = 0;
     camera3.position.z = 70;
     camera3.lookAt(scene.position);
 
-    camera1 = new THREE.OrthographicCamera(window.innerWidth / (- 2*7),
-                                           window.innerWidth / (2*7),
-                                           window.innerHeight / (2*7),
-                                           window.innerHeight / (- 2*7),
+    camera1 = new THREE.OrthographicCamera(window.innerWidth / (- 2*12),
+                                           window.innerWidth / (2*12),
+                                           window.innerHeight / (2*12),
+                                           window.innerHeight / (- 2*12),
                                            1,
                                            1000
                                            );
@@ -444,14 +444,14 @@ function onKeyDown(e) {
         sphere3Mesh.rotation.x -= 0.1;
         sphere3Mesh.position.z = 3.65*Math.cos(t);
         sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
-        t += 0.4;
+        t += 0.1;
         break;
     
     case 87: //w
         sphere3Mesh.rotation.x -= 0.1;
         sphere3Mesh.position.z = 3.65*Math.cos(t);
         sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
-        t -= 0.4;
+        t -= 0.1;
 
         break;
     

@@ -388,6 +388,8 @@ function onKeyDown(e) {
     
     case 37: //left arrow
         leftActive = true;
+        console.log("LEFT CRL");
+        console.log(leftActive);
         break;
     
     case 38: //up arrow
@@ -411,6 +413,78 @@ function onKeyDown(e) {
     }
 }
 
+function onKeyUp(e) {
+    'use strict';
+    switch (e.keyCode) {
+    case 69:  //E
+    case 101: //e
+        eActive = false;
+        break;
+    case 49: // 1
+        oneActive = false;
+        break;
+    
+    case 50: // 2
+        twoActive = false;
+        break;
+
+    case 51: // 3
+        threeActive = false;
+        break;
+    
+    case 52: // 4
+        fourActive = false;
+        break;
+    
+    case 81: //q
+        qActive = false;
+        break;
+    
+    case 87: //w
+        wActive = false;
+        break;
+    
+    case 65: //a
+        aActive = false;
+        break;
+    
+    case 83: //s
+        sActive = false;
+        break;
+    
+    case 90: //z
+        zActive = false;
+        break;
+    
+    case 88: //x
+        xActive = false;        
+        break;
+    
+    case 37: //left arrow
+        leftActive = false;
+        break;
+    
+    case 38: //up arrow
+        upActive = false;
+        break;
+    
+    case 39: //right arrow
+        rightActive = false;
+        break;
+    
+    case 40: //down arrow
+        downActive = false;
+        break;
+    
+    case 68:
+        dActive = false;
+        break;
+    
+    case 67:
+        cActive = false;
+    }
+}
+
 function init() {
     'use strict';
     renderer = new THREE.WebGLRenderer({
@@ -424,6 +498,7 @@ function init() {
 
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("resize", onResize);
+    window.addEventListener("keyup",onKeyUp);
 }
 
 function animate() {
@@ -434,7 +509,7 @@ function animate() {
         sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
         t += 0.1;
         console.log(t);
-        qActive = false;
+        //qActive = false;
     }
 
     if(wActive){
@@ -442,47 +517,47 @@ function animate() {
         sphere3Mesh.position.z = 3.65*Math.cos(t);
         sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
         t -= 0.1;
-        wActive = false;
+        //wActive = false;
     }
 
     if(aActive){
         bigGroup.rotateY(-0.3);
-        aActive = false;
+        //aActive = false;
     }
 
     if(sActive){
         bigGroup.rotateY(0.3);
-        sActive = false;
+        //sActive = false;
     }
 
     if(zActive){
         mediumGroup.rotateY(0.2);
         mediumGroup.rotateZ(0.2);
-        zActive = false;
+        //zActive = false;
     }
 
     if(xActive){
         mediumGroup.rotateY(-0.2);
         mediumGroup.rotateZ(-0.2);
-        xActive = false;
+        //xActive = false;
     }
 
     if(oneActive){
         console.log("change camera to camera1");
         camera = camera1;
-        oneActive = false;
+        //oneActive = false;
     }
 
     if(twoActive){
         console.log("change camera to camera2");
         camera = camera2;
-        twoActive = false;
+        //twoActive = false;
     }
 
     if(threeActive){
         console.log("change camera to camera3");
         camera = camera3;
-        threeActive = false;
+        //threeActive = false;
     }
 
     if(fourActive){
@@ -492,7 +567,7 @@ function animate() {
                 node.material.wireframe = !node.material.wireframe;
             }
         }); 
-        fourActive = false;
+        //fourActive = false;
     }
 
     if(eActive){
@@ -502,39 +577,53 @@ function animate() {
                 node.visible = !node.visible;
             }
         });
-        eActive = false;
+        //eActive = false;
     }
-
+    var a = new THREE.Vector3( 0, 0, 0);
     if(rightActive){
-        bigGroup.translateZ(0.5);
-        rightActive = false;
+        //bigGroup.translateZ(0.5);
+        //rightActive = false;
+        a.add(new THREE.Vector3(0,0,-10));
     }
 
     if(leftActive){
-        bigGroup.translateZ(-0.5);
-        leftActive = false;
+        //bigGroup.translateZ(-0.5);
+        //leftActive = false;
+        a.add(new THREE.Vector3(0,0,10));
     }
 
     if(downActive){
-        bigGroup.translateY(-0.5);
-        downActive = false;
+        //bigGroup.translateY(-0.5);
+        //downActive = false;
+        a.add(new THREE.Vector3(0,-10,0));
     }
 
     if(upActive){
-        bigGroup.translateY(0.5);
-        upActive = false;
+        //bigGroup.translateY(0.5);
+        console.log(upActive);
+        console.log(leftActive);
+        console.log("------------------");
+        //upActive = false;
+        a.add(new THREE.Vector3(0,10,0));
     }
 
     if(cActive){
-        bigGroup.translateX(0.5);
-        cActive = false;
+        //bigGroup.translateX(0.5);
+        //cActive = false;
+        a.add(new THREE.Vector3(10,0,0));
     }
 
     if(dActive){
-        bigGroup.translateX(-0.5);
-        dActive = false;
+        //bigGroup.translateX(-0.5);
+        //dActive = false;
+        a.add(new THREE.Vector3(-10,0,0));
     }
+    a.normalize();
     
+    bigGroup.translateX(a.getComponent(0));
+    bigGroup.translateY(a.getComponent(1));
+    bigGroup.translateZ(a.getComponent(2));
+
     render();
     requestAnimationFrame(animate);
 }

@@ -17,7 +17,7 @@ var cone, cube, bigGroup, mediumGroup, sphereGroup, temp = false;
 
 var angle,cuboid, geometry, material;
 
-var position, t=0;
+var position, t = 1.72;
 
 function createCube(x, y, z){
     'use strict';
@@ -469,6 +469,7 @@ function animate() {
         sphere3Mesh.position.z = 3.65*Math.cos(t);
         sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
         t += 0.1;
+        console.log(t);
         qActive = false;
     }
     if(wActive){

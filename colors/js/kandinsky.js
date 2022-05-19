@@ -9,6 +9,9 @@ var materialCube, materialCone, materialTorus, materialPyramid, materialCuboid;
 var sphereMesh, geometrySphere, materialSphere, materialCuboid;
 var cubeMesh, sphereGroup, torusMesh, pyramidMesh;
 var cuboidMesh, cuboid2Mesh, tubeMesh, boxMesh, weirdMesh, ringMesh, ring2Mesh, sphere2Mesh, sphere3Mesh;
+var qActive, wActive, aActive, sActive, zActive;
+var xActive, oneActive, twoActive, threeActive, fourActive, eActive;
+
 
 var cone, cube, bigGroup, mediumGroup, sphereGroup, temp = false;
 
@@ -79,7 +82,7 @@ function createTorus(x, y, z){
 
 function createPyramid(x, y, z){
     'use strict';
-    geometryPyramid = new THREE.ConeGeometry(15,20,4,50);
+    geometryPyramid = new THREE.ConeGeometry(15,20,10,50);
 
     materialPyramid = new THREE.MeshPhongMaterial({ color: 0xd51deb, wireframe: true});
     pyramidMesh = new THREE.Mesh(geometryPyramid, materialPyramid);
@@ -286,7 +289,6 @@ function createScene() {
     scene.background = new THREE.Color(0x9bc0d0);
     scene.add(new THREE.AxisHelper(10));
     createCube(0, 0, 0);
-    //createCone(0, 16.5, 0);
     createTorus(0, 0, 0);
     createSphere3(0,18.5,0);
     
@@ -304,7 +306,6 @@ function createScene() {
     sphereGroup.add(sphere3Mesh);
     mediumGroup.add(sphere3Mesh);
     mediumGroup.add(torusMesh);
-    //scene.add(mediumGroup);
 
     bigGroup = new THREE.Group();
     bigGroup.add(cubeMesh);
@@ -393,86 +394,52 @@ function render() {
     renderer.render(scene, camera);
 }
 
-
-function rotateMediumGroupLeft(amount){
-   if(mediumGroup.rotation.z < 0.299){
-        mediumGroup.rotateZ(amount);
-    }
-}
-
-
-
-
 function onKeyDown(e) {
     'use strict';
 
     switch (e.keyCode) {
     case 69:  //E
     case 101: //e
-        scene.traverse(function (node) {
-            if (node instanceof THREE.AxisHelper) {
-                console.log("case");
-                node.visible = !node.visible;
-            }
-        });
+        eActive = true;
         break;
     case 49: // 1
-        console.log("change camera to camera1");
-        camera = camera1;
+        oneActive = true;
         break;
     
     case 50: // 2
-        console.log("change camera to camera2");
-        camera = camera2;
+        twoActive = true;
         break;
 
     case 51: // 3
-        console.log("change camera to camera3");
-        camera = camera3;
+        threeActive = true;
         break;
     
     case 52: // 4
-        console.log("toggle wireframe");
-        scene.traverse(function (node) {
-            if (node instanceof THREE.Mesh) {
-                node.material.wireframe = !node.material.wireframe;
-            }
-        });
+        fourActive = true;
         break;
     
     case 81: //q
-        sphere3Mesh.rotation.x -= 0.1;
-        sphere3Mesh.position.z = 3.65*Math.cos(t);
-        sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
-        t += 0.1;
+        qActive = true;
         break;
     
     case 87: //w
-        sphere3Mesh.rotation.x -= 0.1;
-        sphere3Mesh.position.z = 3.65*Math.cos(t);
-        sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
-        t -= 0.1;
-
+        wActive = true;
         break;
     
     case 65: //a
-        
-        bigGroup.rotateY(-0.3);
+        aActive = true;
         break;
     
     case 83: //s
-        bigGroup.rotateY(0.3);
+        sActive = true;
         break;
     
     case 90: //z
-        mediumGroup.rotateY(0.2);
-        mediumGroup.rotateZ(0.2);
+        zActive = true;
         break;
     
     case 88: //x
-        mediumGroup.rotateY(-0.2);
-        mediumGroup.rotateZ(-0.2);
-        //rotateMediumGroupRight(-0.02);
+        xActive = true;        
         break;
 
         
@@ -497,7 +464,82 @@ function init() {
 
 function animate() {
     'use strict';
-    render();
+    if(qActive){
+        sphere3Mesh.rotation.x += 0.1;
+        sphere3Mesh.position.z = 3.65*Math.cos(t);
+        sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
+        t += 0.1;
+        qActive = false;
+    }
+    if(wActive){
+        sphere3Mesh.rotation.x -= 0.1;
+        sphere3Mesh.position.z = 3.65*Math.cos(t);
+        sphere3Mesh.position.y = 3.65*Math.sin(t) + 15;
+        t -= 0.1;
+        wActive = false;
 
+    }
+    if(aActive){
+        bigGroup.rotateY(-0.3);
+        aActive = false;
+
+    }
+    if(sActive){
+        bigGroup.rotateY(0.3);
+        sActive = false;
+
+    }
+    if(zActive){
+        mediumGroup.rotateY(0.2);
+        mediumGroup.rotateZ(0.2);
+        zActive = false;
+
+    }
+    if(xActive){
+        mediumGroup.rotateY(-0.2);
+        mediumGroup.rotateZ(-0.2);
+        xActive = false;
+
+    }
+    if(oneActive){
+        console.log("change camera to camera1");
+        camera = camera1;
+        oneActive = false;
+
+    }
+    if(twoActive){
+        console.log("change camera to camera2");
+        camera = camera2;
+        twoActive = false;
+
+    }
+    if(threeActive){
+        console.log("change camera to camera3");
+        camera = camera3;
+        threeActive = false;
+
+    }
+    if(fourActive){
+        console.log("toggle wireframe");
+        scene.traverse(function (node) {
+            if (node instanceof THREE.Mesh) {
+                node.material.wireframe = !node.material.wireframe;
+            }
+        }); 
+        fourActive = false;
+
+    }
+    if(eActive){
+        scene.traverse(function (node) {
+            if (node instanceof THREE.AxisHelper) {
+                console.log("case");
+                node.visible = !node.visible;
+            }
+        });
+        eActive = false;
+
+    }
+    
+    render();
     requestAnimationFrame(animate);
 }

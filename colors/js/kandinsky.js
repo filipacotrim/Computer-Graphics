@@ -1,25 +1,47 @@
-/*global THREE, requestAnimationFrame, console*/
+/*
+ *  ---------------------------------------------------------------------------                     
+ *                   Computer Graphics - 4th Quarter
+ *
+ *  Authors:
+ *  - Filipa Cotrim, 95572
+ *  - João Pereira,  95600
+ *  - José Afonso,   95613
+ *  
+ *  ---------------------------------------------------------------------------
+ */
 
-//const THREE = require("./three");
-
+/* ---------- Scene and cameras ---------- */
 var camera, scene, renderer, camera1, camera2, camera3;
 
-var geometryCone, geometryCube, geometryTorus, geometryPyramid, geometryCuboid;
-var materialCube, materialCone, materialTorus, materialPyramid, materialCuboid;
-var sphereMesh, geometrySphere, materialSphere, materialCuboid;
-var cubeMesh, sphereGroup, torusMesh, pyramidMesh;
+/* ---------- Geometry ---------- */
+var geometryCone, geometryCube, geometryTorus, geometryPyramid, geometryCuboid, geometrySphere, geometry;
+
+/* ---------- Material ---------- */
+var materialCube, materialCone, materialTorus, materialPyramid, materialCuboid, materialSphere, material;
+
+/* ---------- Mesh ---------- */
+var cubeMesh, torusMesh, pyramidMesh, sphereMesh;
 var cuboidMesh, cuboid2Mesh, tubeMesh, boxMesh, weirdMesh, ringMesh, ring2Mesh, sphere2Mesh, sphere3Mesh;
+
+/* ---------- Boolean variables ---------- */
 var qActive, wActive, aActive, sActive, zActive;
 var xActive, oneActive, twoActive, threeActive, fourActive, eActive;
 var rightActive, leftActive, upActive, downActive, dActive, cActive;
 
+/* ---------- Groups ---------- */
+var cube, bigGroup, mediumGroup;
 
-var cone, cube, bigGroup, mediumGroup, sphereGroup, temp = false;
+/* ---------- Rotations ---------- */
+var angle, t = 1.72;
 
-var angle,cuboid, geometry, material;
 
-var position, t = 1.72;
-
+/**
+ * Create a cube and set its position to (x, y, z)
+ * 
+ * @param  x 
+ * @param  y 
+ * @param  z 
+ */
 function createCube(x, y, z){
     'use strict';
     cube = new THREE.Object3D();
@@ -41,6 +63,13 @@ function createCube(x, y, z){
     cubeMesh.rotation.x = Math.PI/4;
 }
 
+/**
+ * Create a torus and set its position to (x, y, z)
+ * 
+ * @param  x 
+ * @param  y 
+ * @param  z 
+ */
 function createTorus(x, y, z){
     'use strict';
 
@@ -60,6 +89,13 @@ function createTorus(x, y, z){
     
 }
 
+/**
+ * Create a pyramid and set its position to (x, y, z)
+ * 
+ * @param  x 
+ * @param  y 
+ * @param  z 
+ */
 function createPyramid(x, y, z){
     'use strict';
     geometryPyramid = new THREE.ConeGeometry(15,20,10,50);
@@ -74,6 +110,13 @@ function createPyramid(x, y, z){
     pyramidMesh.rotation.z = -Math.PI/6;
 }
 
+
+/**
+ * Create a sphere and set its position to (x, y, z)
+ * @param  x 
+ * @param  y 
+ * @param  z 
+ */
 function createSphere(x, y, z){
     'use strict';
     geometrySphere = new THREE.SphereGeometry(6, 32, 16);
@@ -91,6 +134,12 @@ function createSphere(x, y, z){
 
 }
 
+/**
+ * Create a sphere and set its position to (x, y, z)
+ * @param  x 
+ * @param  y 
+ * @param  z 
+ */
 function createSphere2(x, y, z){
     'use strict';
     //SphereGeometry(radius : Float, widthSegments : Integer, heightSegments : Integer, phiStart : Float, phiLength : Float, thetaStart : Float, thetaLength : Float)
@@ -109,6 +158,12 @@ function createSphere2(x, y, z){
 
 }
 
+/**
+ * Create a sphere and set its position to (x, y, z)
+ * @param  x 
+ * @param  y 
+ * @param  z 
+ */
 function createSphere3(x, y, z){
     'use strict';
     //SphereGeometry(radius : Float, widthSegments : Integer, heightSegments : Integer, phiStart : Float, phiLength : Float, thetaStart : Float, thetaLength : Float)
@@ -128,7 +183,12 @@ function createSphere3(x, y, z){
 }
 
 
-
+/**
+ * Create a cuboid and set its position to (x, y, z)
+ * @param  x 
+ * @param  y 
+ * @param  z 
+ */
 function createCuboid1(x, y, z){
     'use strict';
     //BoxGeometry(width : Float, height : Float, depth : Float, 
@@ -147,6 +207,12 @@ function createCuboid1(x, y, z){
     
 }
 
+/**
+ * Create a cuboid and set its position to (x, y, z)
+ * @param  x 
+ * @param  y 
+ * @param  z 
+ */
 function createCuboid2(x, y, z){
     'use strict';
     //BoxGeometry(width : Float, height : Float, depth : Float, 
@@ -164,12 +230,21 @@ function createCuboid2(x, y, z){
     cuboid2Mesh.rotation.x = -Math.PI/7;
 }
 
+/**
+ * Setup cuboids positions
+ */
 function setupCuboids() {
     let geometry = new THREE.BoxGeometry(3, 10, 0.35);
     cuboids = [];
     addCuboidRing(10, geometry);
 }
 
+/**
+ * Display cuboids in a ring shape
+ * 
+ * @param  radius 
+ * @param  geometry 
+ */
 function addCuboidRing(radius, geometry) {
     for(let i = 1; i <= 10; i++) {
       let angle = i / 10 * Math.PI * 2;
@@ -184,7 +259,13 @@ function addCuboidRing(radius, geometry) {
       cuboids.push(cuboid);
     }
 }
-  
+
+/**
+ * Create a torus knot and set its position to (x, y, z)
+ * @param  x 
+ * @param  y 
+ * @param  z 
+ */
 function createTube(x, y, z){
     'use strict';
     geometry = new THREE.TorusKnotGeometry( 10, 1.485, 100, 16, 2, 1 );
@@ -197,6 +278,12 @@ function createTube(x, y, z){
     tubeMesh.position.set(x, y, z);
 }
 
+/**
+ * Create a box and set its position to (x, y, z)
+ * @param  x 
+ * @param  y 
+ * @param  z 
+ */
 function createBox(x, y, z){
     'use strict';
 
@@ -213,32 +300,42 @@ function createBox(x, y, z){
     boxMesh.rotation.x = Math.PI/8;
 }
 
+/**
+ * Create a torus knot and set its position to (x, y, z)
+ * @param  x 
+ * @param  y 
+ * @param  z 
+ */
 function createWeird(x, y, z){
     'use strict';
     //TorusKnotGeometry(radius : Float, tube : Float, tubularSegments : Integer, radialSegments : Integer, p : Integer, q : Integer)
-
     geometry = new THREE.TorusKnotGeometry( 13,1,100,16);
     material = new THREE.MeshNormalMaterial( { wireframe: true } );
     weirdMesh = new THREE.Mesh( geometry, material );
-
 
     weirdMesh.position.set(x, y, z);
     weirdMesh.rotation.x = Math.PI/4;
 }
 
-
+/**
+ * 
+ * Create scene and add all elements to it
+ * 
+ */
 function createScene() {
     'use strict';
-    
+    //create scene and change background color
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x9bc0d0);
     scene.add(new THREE.AxisHelper(10));
+    
+    //create main object
     createCube(0, 0, 0);
     createTorus(0, 0, 0);
     createSphere3(0,18.5,0);
     
-
-    const light = new THREE.DirectionalLight()
+    //add directional light
+    var light = new THREE.DirectionalLight()
     light.castShadow = true
     light.shadow.mapSize.width = 512
     light.shadow.mapSize.height = 512
@@ -246,17 +343,18 @@ function createScene() {
     light.shadow.camera.far = 100
     scene.add(light)
 
+    //create group with torus and sphere
     mediumGroup = new THREE.Group();
-    sphereGroup = new THREE.Group();
-    sphereGroup.add(sphere3Mesh);
     mediumGroup.add(sphere3Mesh);
     mediumGroup.add(torusMesh);
 
+    //create main group with all articulated object's in it
     bigGroup = new THREE.Group();
     bigGroup.add(cubeMesh);
     bigGroup.add(mediumGroup);
     scene.add(bigGroup);
 
+    //create secondary object's and add them to the scene
     createPyramid(-60,3,-3.5);
     scene.add(pyramidMesh);
     createSphere(-60, 3, 20);
@@ -266,7 +364,6 @@ function createScene() {
     createCuboid2(20,13,48);
     scene.add(cuboid2Mesh);
     setupCuboids();
-
     createBox(10, 10, -40);
     createTube(0, 13, -40);
     scene.add(boxMesh);
@@ -277,8 +374,28 @@ function createScene() {
     scene.add(sphere2Mesh);
 }
 
+/**
+ * Create all cameras
+ *  Camera 1 -> orthographic that show all the scene (main)
+ *  Camera 2 -> orthographic with a view from above the scene
+ *  Camera 3 -> orthographic with a side view of the scene
+ */ 
 function createCamera() {
     'use strict';
+
+    camera1 = new THREE.OrthographicCamera(window.innerWidth / (- 2*12),
+                                           window.innerWidth / (2*12),
+                                           window.innerHeight / (2*12),
+                                           window.innerHeight / (- 2*12),
+                                           1,
+                                           1000
+                                           );
+
+    camera1.position.x = 50;
+    camera1.position.y = 50;
+    camera1.position.z = 50;
+    camera1.lookAt(scene.position);
+    
     camera2 = new THREE.OrthographicCamera(window.innerWidth / (- 2*12),
                                             window.innerWidth / (2*12),
                                             window.innerHeight / (2*12),
@@ -305,23 +422,13 @@ function createCamera() {
     camera3.position.z = 70;
     camera3.lookAt(scene.position);
 
-    camera1 = new THREE.OrthographicCamera(window.innerWidth / (- 2*12),
-                                           window.innerWidth / (2*12),
-                                           window.innerHeight / (2*12),
-                                           window.innerHeight / (- 2*12),
-                                           1,
-                                           1000
-                                           );
-    
-    camera1.position.x = 50;
-    camera1.position.y = 50;
-    camera1.position.z = 50;
-    camera1.lookAt(scene.position);
-                    
-    
+    //set main camera as camera 1
     camera = camera1;
 }
 
+/**
+ * Allow window resizing
+ */
 function onResize() {
     'use strict';
 
@@ -334,11 +441,19 @@ function onResize() {
 
 }
 
+/**
+ * Render function
+ */
 function render() {
     'use strict';
     renderer.render(scene, camera);
 }
 
+/**
+ * Set boolean flags acording to what keys are pressed
+ * 
+ * @param  e 
+ */
 function onKeyDown(e) {
     'use strict';
     switch (e.keyCode) {
@@ -402,15 +517,20 @@ function onKeyDown(e) {
         downActive = true;
         break;
     
-    case 68:
+    case 68: //d
         dActive = true;
         break;
     
-    case 67:
+    case 67: //c
         cActive = true;
     }
 }
 
+/**
+ * Set boolean flags acording to what keys are pressed
+ * 
+ * @param  e 
+ */
 function onKeyUp(e) {
     'use strict';
     switch (e.keyCode) {
@@ -458,15 +578,18 @@ function onKeyUp(e) {
         downActive = false;
         break;
     
-    case 68:
+    case 68: //d
         dActive = false;
         break;
     
-    case 67:
+    case 67: //c
         cActive = false;
     }
 }
 
+/**
+ * Init function
+ */
 function init() {
     'use strict';
     renderer = new THREE.WebGLRenderer({
@@ -478,12 +601,16 @@ function init() {
     createScene();
     createCamera();
 
+    //add event listeners for keys and resizing
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("resize", onResize);
     window.addEventListener("keyup",onKeyUp);
 }
 
-function animate() {
+/**
+ * Update rotations and translations
+ */
+function animationAux(){
     'use strict';
     if(qActive){
         sphere3Mesh.rotation.x += 0.1;
@@ -519,25 +646,25 @@ function animate() {
     }
 
     if(oneActive){
-        console.log("change camera to camera1");
+        //change to camera 1
         camera = camera1;
         oneActive = false;
     }
 
     if(twoActive){
-        console.log("change camera to camera2");
+        //change to camera 2
         camera = camera2;
         twoActive = false;
     }
 
     if(threeActive){
-        console.log("change camera to camera3");
+        //change to camera 3
         camera = camera3;
         threeActive = false;
     }
 
     if(fourActive){
-        console.log("toggle wireframe");
+        // toggle wireframe
         scene.traverse(function (node) {
             if (node instanceof THREE.Mesh) {
                 node.material.wireframe = !node.material.wireframe;
@@ -547,43 +674,58 @@ function animate() {
     }
 
     if(eActive){
+        // toggle axis helper
         scene.traverse(function (node) {
             if (node instanceof THREE.AxisHelper){
-                console.log("case");
                 node.visible = !node.visible;
             }
         });
     }
-    var a = new THREE.Vector3( 0, 0, 0);
-    if(rightActive){
-        a.add(new THREE.Vector3(0,0,-10));
-    }
-
-    if(leftActive){
-        a.add(new THREE.Vector3(0,0,10));
-    }
-
-    if(downActive){
-        a.add(new THREE.Vector3(0,-10,0));
-    }
-
-    if(upActive){
-        a.add(new THREE.Vector3(0,10,0));
-    }
-
-    if(cActive){
-        a.add(new THREE.Vector3(10,0,0));
-    }
-
-    if(dActive){
-        a.add(new THREE.Vector3(-10,0,0));
-    }
-    a.normalize();
     
-    bigGroup.translateX(a.getComponent(0));
-    bigGroup.translateY(a.getComponent(1));
-    bigGroup.translateZ(a.getComponent(2));
+    
+    //register articulated object's translation
+    if(rightActive || leftActive || downActive || upActive || dActive || cActive){
+        var a = new THREE.Vector3( 0, 0, 0);
+        if(rightActive){
+            a.add(new THREE.Vector3(0,0,-10));
+        }
+    
+        if(leftActive){
+            a.add(new THREE.Vector3(0,0,10));
+        }
+    
+        if(downActive){
+            a.add(new THREE.Vector3(0,-10,0));
+        }
+    
+        if(upActive){
+            a.add(new THREE.Vector3(0,10,0));
+        }
+    
+        if(cActive){
+            a.add(new THREE.Vector3(10,0,0));
+        }
+    
+        if(dActive){
+            a.add(new THREE.Vector3(-10,0,0));
+        }
+        a.normalize();
+        //perform translation
+        bigGroup.translateX(a.getComponent(0));
+        bigGroup.translateY(a.getComponent(1));
+        bigGroup.translateZ(a.getComponent(2));
+    }
+}
 
+
+/**
+ * Animate function
+ */
+function animate() {
+    'use strict';
+    //update rotations and translations
+    animationAux();
+    //render and request animation
     render();
     requestAnimationFrame(animate);
 }

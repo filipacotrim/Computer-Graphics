@@ -2,6 +2,8 @@
 
 This repository contains work developed in the Computer Graphics course @ IST.
 
+All assignments were completed using JavaScript's framework, ThreeJs.
+
 Author | Github
 -------|-------
 Filipa Cotrim | https://github.com/filipacotrim
